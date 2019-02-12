@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context-4.0.xsd">
+
+    <!-- внутри прописывается код автоматически для аннотаций -->
+    <context:annotation-config/>
+    <!-- Для работы пост процессора для @Profiling -->
+    <bean class="quoters.ProfilingHandlerBeanPostProcessor"/>
+    <!-- Для работы @PostConstruct -->
+    <bean class="org.springframework.context.annotation.CommonAnnotationBeanPostProcessor"/> <!-- -->
+    <!-- Для работы нашей аннотации -->
+    <bean class="quoters.InjectRandomIntAnnotationBeanPostProcessor"/>
+    <!-- Инициализация бина -->
+    <bean class="quoters.TerminatorQuoter" id="terminatorQuoter">
+        <property name="message" value="I'll be back"/>
+    </bean>
+</beans>
