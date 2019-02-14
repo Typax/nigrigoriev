@@ -37,18 +37,18 @@ public class ProfilingHandlerBeanPostProcessor implements BeanPostProcessor {
         // Это означает, что return будем делать не оригинальным объектом, а объектом которым сгенерится с помощью dinamicProxy
         // он создаёт объект из нового класса который сгенерит он же сам на лету.
         if (beanClass != null) {
-            return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), new InvocationHandler() {
-                @Override
-                public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-                    // логика которая будет в каждом методе класса который сгенерится на лету, который имплементиркует
-                    // интерфейсы огиринального класса
-                    if (controller.isEnabled()) {
-                        System.out.println("Профилирую..."); long before = System.nanoTime();
-                        Object retVal = method.invoke(bean, args); long after = System.nanoTime();
-                        System.out.println(after - before); System.out.println("Всё"); return retVal;
-                    } else {
-                        return method.invoke(bean, args);
-                    }
+            return Proxy.newProxyInstance(beanClass.getClassLoader(), beanClass.getInterfaces(), (proxy, method, args) -> {
+                // логика которая будет в каждом методе класса который сгенерится на лету, который имплементиркует
+                // интерфейсы огиринального класса
+                if (controller.isEnabled()) {
+                    System.out.println("Профилирую...");
+                    long before = System.nanoTime();
+                    Object retVal = method.invoke(bean, args);
+                    long after = System.nanoTime();
+                    System.out.println(after - before); System.out.println("Всё");
+                    return retVal;
+                } else {
+                    return method.invoke(bean, args);
                 }
             });
         } return bean;

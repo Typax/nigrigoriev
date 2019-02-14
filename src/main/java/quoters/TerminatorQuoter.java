@@ -24,8 +24,11 @@ public class TerminatorQuoter implements Quoter {
         this.message = message;
     }
 
+
     @Override
+    @PostProxy
     public void sayQuote() {
+        System.out.println("3 phase");
         for (int i = 0; i < repeat; i++) {
             System.out.println("message = " + message);
 
