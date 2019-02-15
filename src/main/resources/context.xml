@@ -9,6 +9,7 @@
 
     <!-- внутри прописывается код автоматически для аннотаций -->
     <context:annotation-config/>
+    <bean class="quoters.DeprecationHandlerBeanFactoryPostProcessor"/>
     <!-- Для работы пост процессора для @PostProxy -->
     <bean class="quoters.PostProxyInvokerContextListener"/>
     <!-- Для работы пост процессора для @Profiling -->

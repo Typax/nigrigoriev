@@ -6,7 +6,7 @@ public class Main {
     public static void main(String[] args) {
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("context.xml");
         //достаём class по интерфейсу так как интерфейс не меняяется, а класс имеент название com.sun.$Proxy..
-        //context.getBean(Quoter.class).sayQuote();
+        context.getBean(Quoter.class).sayQuote();
     }
 }
 /**
@@ -15,12 +15,16 @@ public class Main {
  * 1. BeanDefinitionReader (стрекоза) - прилетает в наш context.xml и считывает bean
  * 2. (стрекоза) кладёт их в BeanDefinition (Map) ключ - id beana,
  *    значение декларация (из какого класса нужно создавать, есть ли init метод и все настройки beana из xml)
- * 3. Как только наши BeanDefinition созданы они идут в BeanFactory
+ *
+ * 3. Есть BeanFactoryPostProcessor он подкручивает BeanDefinition, перед тем как они попадут в BeanFactory и начнутся создаваться бины
+ *    Пример - вместо старой реализации класса подставляем ей новую с помощью @DeprecatedClass
+ *
+ * 4. Как только наши BeanDefinition созданы они идут в BeanFactory
  *    BeanFactory ищет обычные POJO и соединяет их с BeanDefinition
  *    начинает вызывать BeanPostProcessor (postProcessBeforeInitialization, postProcessAfterInitialization) для каждого bean
  *    после отработки postProcessAfterInitialization, ApplicationListener вызывает event refresh
  *    настройеп beana закончина, все аннотации работают
- * 4. После настройки, bean помещается в контейнер (IOC)
+ * 5. После настройки, bean помещается в контейнер (IOC)
  *
  * Информационные факты
  *
@@ -51,4 +55,11 @@ public class Main {
  *    мы его ловим в классе(PostProxyInvokerContextListener)
  * 6. и вызываем метод который обозначен аннотацией @PostProxy (3-тий конструктор)
  *    на этом уровне бин настроен у нас есть транзакция и мы можеем сходить в БД, что бы прогреть кэш
+ */
+
+
+
+/**
+ * ClassPathBeanDefinitionScanner он является (ResourceLoaderAware)
+ * создаёт BeanDefinitions
  */
