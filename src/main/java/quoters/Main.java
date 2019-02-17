@@ -61,5 +61,5 @@ public class Main {
 
 /**
  * ClassPathBeanDefinitionScanner он является (ResourceLoaderAware)
- * создаёт BeanDefinitions
+ * создаёт дополнительные BeanDefinitions тех всех аннотаций, которые наследуют аннотацию @component
  */
